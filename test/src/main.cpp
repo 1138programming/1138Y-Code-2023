@@ -79,6 +79,7 @@ void opcontrol() {
 	
 
 	while (true) {
+		//three intake speeds
 		if (master.get_digital(DIGITAL_R1)) {
 			rightIntakeMotor.move(KIntakeSpeedSlow);
 			leftIntakeMotor.move(KIntakeSpeedSlow);
@@ -92,6 +93,7 @@ void opcontrol() {
 			leftIntakeMotor.move(KIntakeSpeedFast);
 		}
 		else {
+			//stops motors when button is not pressed
 			rightIntakeMotor.move(0);
 			leftIntakeMotor.move(0);
 		}
