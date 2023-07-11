@@ -84,8 +84,8 @@ void opcontrol() {
 			leftIntakeMotor.move(KIntakeSpeedSlow);
 		}
 		else if (master.get_digital(DIGITAL_R2)) {
-			rightIntakeMotor.move(-KIntakeSpeedMed);
-			leftIntakeMotor.move(-KIntakeSpeedMed);
+			rightIntakeMotor.move(KIntakeSpeedMed);
+			leftIntakeMotor.move(KIntakeSpeedMed);
 		}
 		else if (master.get_digital(DIGITAL_L1)) {
 			rightIntakeMotor.move(KIntakeSpeedFast);
