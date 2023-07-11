@@ -81,5 +81,9 @@ void opcontrol() {
 			rightIntakeMotor.move(KIntakeSpeed);
 			leftIntakeMotor.move(KIntakeSpeed);
 		}
+		if (master.get_digital(DIGITAL_R2)) {
+			rightIntakeMotor.move(-KIntakeSpeed);
+			leftIntakeMotor.move(-KIntakeSpeed);
+		}
 	}
 }
