@@ -12,9 +12,7 @@ int KRightIntakePort = 1;
 int KLeftIntakeLeft = 2;
 
 //Other
-float KIntakeSpeedSlow = 30;
-float KIntakeSpeedMed = 50;
-float KIntakeSpeedFast = 70;
+float KIntakeSpeed = 50;
 
 //Motors
 pros::Motor rightIntakeMotor (KRightIntakePort);
@@ -81,21 +79,24 @@ void opcontrol() {
 	while (true) {
 		//three intake speeds
 		if (master.get_digital(DIGITAL_R1)) {
-			rightIntakeMotor.move(KIntakeSpeedSlow);
-			leftIntakeMotor.move(KIntakeSpeedSlow);
+			rightIntakeMotor.move(KIntakeSpeed);
+			leftIntakeMotor.move(KIntakeSpeed);
 		}
-		else if (master.get_digital(DIGITAL_R2)) {
-			rightIntakeMotor.move(KIntakeSpeedMed);
-			leftIntakeMotor.move(KIntakeSpeedMed);
-		}
-		else if (master.get_digital(DIGITAL_L1)) {
-			rightIntakeMotor.move(KIntakeSpeedFast);
-			leftIntakeMotor.move(KIntakeSpeedFast);
+		else if (master.get_digital(DIGITAL_R1)) {
+			rightIntakeMotor.move(-KIntakeSpeed);
+			leftIntakeMotor.move(-KIntakeSpeed);
 		}
 		else {
 			//stops motors when button is not pressed
 			rightIntakeMotor.move(0);
 			leftIntakeMotor.move(0);
+		}
+		//Increases and decreases speed
+		if (master.get_digital(DIGITAL_L1)) {
+			KIntakeSpeed = KIntakeSpeed + 5;
+		}
+		if (master.get_digital(DIGITAL_L2)) {
+			KIntakeSpeed = KIntakeSpeed - 5;
 		}
 	}
 }
