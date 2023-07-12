@@ -12,7 +12,7 @@ int KRightIntakePort = 1;
 int KLeftIntakeLeft = 2;
 
 //Other
-float IntakeSpeed = 50;
+int IntakeSpeed = 50;
 bool BHeldLast = false;
 bool AHeldLast = false;
 
@@ -95,18 +95,18 @@ void opcontrol() {
 		}
 		//Increases and decreases speed
 		if (master.get_digital(DIGITAL_A)) {
-			If (AHeldLast == false) {
-				IntakeSpeed = IntakeSpeed + 5;
+			if (AHeldLast == false) {
+				IntakeSpeed += 5;
 			}
 			AHeldLast == true;
 		}
-		else AHeldLast == false;
+		else {AHeldLast == false;}
 		if (master.get_digital(DIGITAL_B)) {
-			If (BHeldLast == false) {
-				IntakeSpeed = IntakeSpeed + 5;
+			if (BHeldLast == false) {
+				IntakeSpeed -= 5;
 			}
 			BHeldLast = true;
 		}
-		else BHeldLast == false;
+		else {BHeldLast == false;}
 	}
 }
