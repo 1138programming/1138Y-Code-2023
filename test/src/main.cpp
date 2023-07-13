@@ -1,4 +1,5 @@
 #include "main.h"
+#include "constants.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -7,18 +8,23 @@
  * "I was pressed!" and nothing.
  */
 
-//Ports
-int KRightIntakePort = 1;
-int KLeftIntakeLeft = 2;
-
 //Other
-int IntakeSpeed = 50;
-bool BHeldLast = false;
-bool AHeldLast = false;
+int IntakeSpeed = 60;
 
 //Motors
-pros::Motor rightIntakeMotor (KRightIntakePort);
-pros::Motor leftIntakeMotor (KLeftIntakeLeft, true);
+// pros::Motor intakeMotor (KIntakePort);
+// pros::Motor rightFrontMotor (KRightFrontWheelPort);
+// pros::Motor rightMidMotor (KRightMidWheelPort);
+// pros::Motor rightBackMotor (KRightBackWheelPort);
+// pros::Motor leftFrontMotor (KLeftFrontWheelPort);
+// pros::Motor leftMidMotor (KLeftMidWheelPort);
+// pros::Motor leftBackMotor (KLeftBackWheelPort);
+
+// pros::Motor_Group rightMotors ({rightFrontMotor,rightMidMotor,rightBackMotor}),
+// pros::Motor_Group leftMotors ({LeftFrontMotor,LeftMidMotor,leftBackMotor});
+pros::Motor_Group rightMotors ({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}),
+pros::Motor_Group leftMotors ({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort});
+Intake intake(KIntakePort);
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -77,36 +83,35 @@ void autonomous() {}
  */
 void opcontrol() {
 	
-
 	while (true) {
-		//three intake speeds
+		//sets speed and turning for base
+		int speed = (master.get_analog(ANALOG_LEFT_Y))
+		int turning = (master.get_analog(ANALOG_RIGHT_X))
+		//sets speeds for drivebase
+		int rightControl = (speed + turning);
+		int leftControl = (speed - turning);
+
+		rightMotors.move(rightControl);
+		leftMotors.move(leftControl);
+
+		// rightFrontMotor.move(rightControl);
+		// rightMidMotor.move(rightControl);
+		// rightBackMotor.move(rightControl);
+		// leftFrontMotor.move(leftControl);
+		// leftMidMotor.move(leftControl);
+		// leftBackMotor.move(leftControl);
+
+		//intake forwards and backwards
 		if (master.get_digital(DIGITAL_R2)) {
-			rightIntakeMotor.move(IntakeSpeed);
-			leftIntakeMotor.move(IntakeSpeed);
+			intakeMotor.move(IntakeSpeed);
 		}
 		else if (master.get_digital(DIGITAL_R1)) {
-			rightIntakeMotor.move(-IntakeSpeed);
-			leftIntakeMotor.move(-IntakeSpeed);
+			intakeMotor.move(-IntakeSpeed);
 		}
+		//stops motors when button is not pressed
 		else {
-			//stops motors when button is not pressed
 			rightIntakeMotor.move(0);
 			leftIntakeMotor.move(0);
 		}
-		//Increases and decreases speed
-		if (master.get_digital(DIGITAL_A)) {
-			if (AHeldLast == false) {
-				IntakeSpeed += 5;
-			}
-			AHeldLast == true;
-		}
-		else {AHeldLast == false;}
-		if (master.get_digital(DIGITAL_B)) {
-			if (BHeldLast == false) {
-				IntakeSpeed -= 5;
-			}
-			BHeldLast = true;
-		}
-		else {BHeldLast == false;}
 	}
 }
