@@ -1,5 +1,6 @@
 #include "main.h"
-#include "constants.h"
+#include "Base.h"
+#include "Constants.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -8,23 +9,20 @@
  * "I was pressed!" and nothing.
  */
 
-//Other
+//Variables
+int BaseSpeed;
+int BaseTurning;
 int IntakeSpeed = 60;
 
-//Motors
-// pros::Motor intakeMotor (KIntakePort);
-// pros::Motor rightFrontMotor (KRightFrontWheelPort);
-// pros::Motor rightMidMotor (KRightMidWheelPort);
-// pros::Motor rightBackMotor (KRightBackWheelPort);
-// pros::Motor leftFrontMotor (KLeftFrontWheelPort);
-// pros::Motor leftMidMotor (KLeftMidWheelPort);
-// pros::Motor leftBackMotor (KLeftBackWheelPort);
+//creates right and left motor groups
+// pros::Motor_Group rightMotors ({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort});
+// pros::Motor_Group leftMotors ({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort});
 
-// pros::Motor_Group rightMotors ({rightFrontMotor,rightMidMotor,rightBackMotor}),
-// pros::Motor_Group leftMotors ({LeftFrontMotor,LeftMidMotor,leftBackMotor});
-pros::Motor_Group rightMotors ({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}),
-pros::Motor_Group leftMotors ({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort});
-Intake intake(KIntakePort);
+//creates drivebase objecth
+Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort}),
+	new pros::Motor_Group({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}));
+// Base robotBase(leftMotors, rightMotors);
+pros::Motor intakeMotor(KIntakePort);
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -85,21 +83,13 @@ void opcontrol() {
 	
 	while (true) {
 		//sets speed and turning for base
-		int speed = (master.get_analog(ANALOG_LEFT_Y))
-		int turning = (master.get_analog(ANALOG_RIGHT_X))
-		//sets speeds for drivebase
-		int rightControl = (speed + turning);
-		int leftControl = (speed - turning);
+		BaseSpeed = (master.get_analog(ANALOG_LEFT_Y));
+		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
 
-		rightMotors.move(rightControl);
-		leftMotors.move(leftControl);
+		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
 
-		// rightFrontMotor.move(rightControl);
-		// rightMidMotor.move(rightControl);
-		// rightBackMotor.move(rightControl);
-		// leftFrontMotor.move(leftControl);
-		// leftMidMotor.move(leftControl);
-		// leftBackMotor.move(leftControl);
+		// rightMotors.move(rightControl);
+		// leftMotors.move(leftControl);
 
 		//intake forwards and backwards
 		if (master.get_digital(DIGITAL_R2)) {
@@ -110,8 +100,7 @@ void opcontrol() {
 		}
 		//stops motors when button is not pressed
 		else {
-			rightIntakeMotor.move(0);
-			leftIntakeMotor.move(0);
+			intakeMotor.move(0);
 		}
 	}
 }
