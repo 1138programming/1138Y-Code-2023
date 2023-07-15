@@ -1,15 +1,16 @@
 #ifndef Constants_H
 #define Constants_H
 
-//Intake Port
-const int KIntakePort = 1;
+//Intake Ports (TBD!)
+const int KRightIntakePort = 0;
+const int KLeftIntakePort = 0;
 
-//Drivebase Ports
-const int KRightFrontWheelPort = 3;
+//Drivebase Ports (TBD!)
+const int KRightFrontWheelPort = 2;
 const int KRightMidWheelPort = 4;
-const int KRightBackWheelPort = 5;
-const int KLeftFrontWheelPort = 6;
-const int KLeftMidWheelPort = 7;
-const int KLeftBackWheelPort = 8;
+const int KRightBackWheelPort = 6;
+const int KLeftFrontWheelPort = 7;
+const int KLeftMidWheelPort = 8;
+const int KLeftBackWheelPort = 9;
 
 #endif

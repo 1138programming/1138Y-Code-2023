@@ -1,5 +1,5 @@
-#ifndef BASE_H
-#define BASE_H
+#ifndef Base_H
+#define Base_H
 
 #include "main.h"
 
@@ -20,7 +20,7 @@ class Base {
             int rightControl = (speed + turning);
             int leftControl = (speed - turning);
 
-            (*rightMotors).move(rightControl);
+            (*rightMotors).move(-rightControl);
             (*leftMotors).move(leftControl);
         }
 };
