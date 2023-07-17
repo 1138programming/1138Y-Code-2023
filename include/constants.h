@@ -4,6 +4,7 @@
 //Intake Ports (TBD!)
 const int KRightIntakePort = 0;
 const int KLeftIntakePort = 0;
+const int KLimitSwitchPort = 0;
 
 //Drivebase Ports (TBD!)
 const int KRightFrontWheelPort = 2;

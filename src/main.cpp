@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Base.h"
+#include "Intake.h"
 #include "constants.h"
 
 /**
@@ -19,7 +20,11 @@ int IntakeSpeed = 60;
 // creates drivebase object
 Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort}),
 	new pros::Motor_Group({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}));
-pros::Motor intakeMotor(KIntakePort);
+
+//creates intake motors, motor group and limit switch
+pros::Motor intakeRightMotor(KRightIntakePort, true);
+pros::Motor intakeLeftMotor(KLeftIntakePort);
+Intake intake(new pros::Motor_Group({intakeRightMotor, intakeLeftMotor}), new pros::ADIDigitalIn(KLimitSwitchPort));
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -82,19 +87,11 @@ void opcontrol() {
 		//sets speed and turning for base
 		BaseSpeed = (master.get_analog(ANALOG_LEFT_Y));
 		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
-
+		
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
         
 		//intake forwards and backwards
-		if (master.get_digital(DIGITAL_R2)) {
-			intakeMotor.move(IntakeSpeed);
-		}
-		else if (master.get_digital(DIGITAL_R1)) {
-			intakeMotor.move(-IntakeSpeed);
-		}
-		//stops motors when button is not pressed
-		else {
-			intakeMotor.move(0);
-		}
+		
+		
 	}
 }
