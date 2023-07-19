@@ -1,6 +1,6 @@
 #include "main.h"
 #include "Base.h"
-#include "constants.h"
+#include "Constants.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -12,14 +12,10 @@
 //Variables
 int BaseSpeed;
 int BaseTurning;
-int IntakeSpeed = 60;
-
-//creates right and left motor groups
 
 // creates drivebase object
 Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort}),
 	new pros::Motor_Group({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}));
-pros::Motor intakeMotor(KIntakePort);
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -84,17 +80,5 @@ void opcontrol() {
 		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
 
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
-        
-		//intake forwards and backwards
-		if (master.get_digital(DIGITAL_R2)) {
-			intakeMotor.move(IntakeSpeed);
-		}
-		else if (master.get_digital(DIGITAL_R1)) {
-			intakeMotor.move(-IntakeSpeed);
-		}
-		//stops motors when button is not pressed
-		else {
-			intakeMotor.move(0);
-		}
 	}
 }
