@@ -14,4 +14,7 @@ const int KLeftFrontWheelPort = 7;
 const int KLeftMidWheelPort = 8;
 const int KLeftBackWheelPort = 9;
 
+//constant motor speeds (TBD!)
+const int KIntakeSpeed = 0;
+
 #endif

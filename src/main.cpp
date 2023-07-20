@@ -88,10 +88,8 @@ void opcontrol() {
 		BaseSpeed = (master.get_analog(ANALOG_LEFT_Y));
 		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
 		
+		//runs all the different parts of the bot
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
-        
-		//intake forwards and backwards
-		
-		
+        intake.holdToSpinIntake(KIntakeSpeed);	
 	}
 }
