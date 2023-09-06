@@ -23,6 +23,10 @@ class Base {
             (*rightMotors).move(-rightControl);
             (*leftMotors).move(leftControl);
         }
+        void driveForwards(speed) {
+            this->rightMotors->move(speed);
+            this->leftMotors->move(speed);
+        }
 };
 
 #endif
