@@ -53,6 +53,10 @@ class Base {
         void decreaseSpeed() {
             if(this->botSpeedLevel>1) this->botSpeedLevel--;
         }
+        void driveForwards(speed) {
+            this->rightMotors->move(speed);
+            this->leftMotors->move(speed);
+        }
 };
 
 #endif
