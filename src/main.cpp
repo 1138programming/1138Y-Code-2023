@@ -9,13 +9,19 @@
  * "I was pressed!" and nothing.
  */
 
-//Variables
+//Base Variables
 int BaseSpeed;
 int BaseTurning;
 
+//Track button presses to make single button presses function properly
+bool R1PressedLast = false;
+bool R2PressedLast = false;
+bool UpPressedLast = false;
+bool DownPressedLast = false;
+
 // creates drivebase object
-Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort}),
-	new pros::Motor_Group({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}));
+Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftBackWheelPort}),
+	new pros::Motor_Group({KRightFrontWheelPort,KRightBackWheelPort}));
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -80,5 +86,48 @@ void opcontrol() {
 		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
 
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
+
+		//control for swapping front of bot
+		if (master.get_digital(DIGITAL_R1)) {
+			if (!R1PressedLast) {
+				robotBase.swapBotFront();
+			}
+			R1PressedLast = true;
+		} else {
+			R1PressedLast = false;
+		}
+
+		//placeholder for other function
+		// if (master.get_digital(DIGITAL_R1)) {
+		// 	if (!R1PressedLast) {
+				
+		// 	}
+		// 	R1PressedLast = true;
+		// } else {
+		// 	R1PressedLast = false;
+		// }
+
+		//control for increasing speed mode
+		if (master.get_digital(DIGITAL_UP)) {
+			if (!UpPressedLast) {
+				robotBase.increaseSpeed();
+			}
+			UpPressedLast = true;
+		} else {
+			UpPressedLast = false;
+		}
+
+		//control for decreasing speed mode
+		if (master.get_digital(DIGITAL_DOWN)) {
+			if (!DownPressedLast) {
+				robotBase.decreaseSpeed();
+			}
+			DownPressedLast = true;
+		} else {
+			DownPressedLast = false;
+		}
+
+
+
 	}
 }
