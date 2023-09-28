@@ -4,10 +4,11 @@
 #include "main.h"
 
 class Base {
-    pros::Motor_Group* rightMotors;
-    pros::Motor_Group* leftMotors;
-    bool swappedFront;
-    int botSpeedLevel = 2;
+    private:
+        pros::Motor_Group* rightMotors;
+        pros::Motor_Group* leftMotors;
+        bool swappedFront;
+        int botSpeedLevel = 2;
 
     public:
         //base object
@@ -53,7 +54,7 @@ class Base {
         void decreaseSpeed() {
             if(this->botSpeedLevel>1) this->botSpeedLevel--;
         }
-        void driveForwards(speed) {
+        void driveForwards(int speed) {
             this->rightMotors->move(speed);
             this->leftMotors->move(speed);
         }

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "Base.h"
 #include "Constants.h"
+#include "Auton.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -22,6 +23,7 @@ bool DownPressedLast = false;
 // creates drivebase object
 Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftBackWheelPort}),
 	new pros::Motor_Group({KRightFrontWheelPort,KRightBackWheelPort}));
+Auton auton(&robotBase);
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -63,7 +65,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	auton.driveForwardsAuton(2.0);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task

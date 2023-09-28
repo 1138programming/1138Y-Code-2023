@@ -1,5 +1,5 @@
-#ifndef AUTON_H
-#define AUTON_H
+#ifndef Auton_H
+#define Auton_H
 
 #include "main.h"
 #include "base.h"
@@ -16,6 +16,7 @@ class Auton {
             double initialTime = pros::millis()/1000;
 
             while(pros::millis()/1000 - initialTime < timeSecs) {
+                //100 is the speed of the motors during auton
                 this->base->driveForwards(100);
                 pros::delay(10);
             }
