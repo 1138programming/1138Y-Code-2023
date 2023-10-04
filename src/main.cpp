@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Base.h"
+#include "pusher.h"
 #include "Constants.h"
 #include "Auton.h"
 
@@ -16,7 +17,8 @@ int BaseTurning;
 
 //Track button presses to make single button presses function properly
 bool R1PressedLast = false;
-bool R2PressedLast = false;
+bool L1PressedLast = false;
+bool L2PressedLast = false;
 bool UpPressedLast = false;
 bool DownPressedLast = false;
 
@@ -24,6 +26,8 @@ bool DownPressedLast = false;
 Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftBackWheelPort}),
 	new pros::Motor_Group({KRightFrontWheelPort,KRightBackWheelPort}));
 Auton auton(&robotBase);
+// creates Pusher object
+Pusher pusher(new pros::Motor(KLeftPusherPort), new pros::Motor(KRightPusherPort));
 
 //Controller
 pros::Controller master (CONTROLLER_MASTER);
@@ -101,15 +105,25 @@ void opcontrol() {
 			R1PressedLast = false;
 		}
 
-		//placeholder for other function
-		// if (master.get_digital(DIGITAL_R1)) {
-		// 	if (!R1PressedLast) {
-				
-		// 	}
-		// 	R1PressedLast = true;
-		// } else {
-		// 	R1PressedLast = false;
-		// }
+		//control for opening pusher
+		if (master.get_digital(DIGITAL_L1)) {
+			if (!L1PressedLast) {
+				pusher.openPusher();
+			}
+			L1PressedLast = true;
+		} else {
+			L1PressedLast = false;
+		}
+
+		//control for closing pusher
+		if (master.get_digital(DIGITAL_L2)) {
+			if (!L2PressedLast) {
+				pusher.closePusher();
+			}
+			L2PressedLast = true;
+		} else {
+			L2PressedLast = false;
+		}
 
 		//control for increasing speed mode
 		if (master.get_digital(DIGITAL_UP)) {

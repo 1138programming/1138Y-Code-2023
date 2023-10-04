@@ -1,9 +1,9 @@
 #ifndef Constants_H
 #define Constants_H
 
-//Intake Ports (TBD!)
-const int KRightIntakePort = 0;
-const int KLeftIntakePort = 0;
+//Pusher Ports (TBD!)
+const int KRightPusherPort = 19;
+const int KLeftPusherPort = 20;
 
 //Drivebase Ports (TBD!)
 const int KRightFrontWheelPort = 2;
