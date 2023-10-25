@@ -56,7 +56,7 @@ class Base {
         }
         void driveForwards(int speed) {
             this->rightMotors->move(speed);
-            this->leftMotors->move(speed);
+            this->leftMotors->move(-speed);
         }
 };
 

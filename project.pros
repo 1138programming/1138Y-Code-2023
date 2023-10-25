@@ -309,9 +309,9 @@
       }
     },
     "upload_options": {
-      "after": "screen",
+      "after": "none",
       "icon": "pros",
-      "slot": 2
+      "slot": 3
     }
   }
 }

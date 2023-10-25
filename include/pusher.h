@@ -16,12 +16,12 @@ class Pusher {
         }
 
         void openPusher(){
-            this->rightPusher->move_relative(700,200);
-            this->leftPusher->move_relative(-700,200);
+            this->rightPusher->move_relative(1800,100);
+            this->leftPusher->move_relative(-1800,100);
         }
         void closePusher(){
-            this->rightPusher->move_relative(-700,200);
-            this->leftPusher->move_relative(700,200);
+            this->rightPusher->move_relative(-1800,100);
+            this->leftPusher->move_relative(1800,100);
         }
 };
 
