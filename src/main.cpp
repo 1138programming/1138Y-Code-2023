@@ -70,7 +70,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	auton.driveForwardsAuton(2.0);
+	auton.driveForwardsAuton(1.1);
+	auton.driveBackwardsAuton(0.1);
 }
 
 /**
@@ -126,7 +127,7 @@ void opcontrol() {
 		}
 
 		//control for increasing speed mode
-		if (master.get_digital(DIGITAL_UP)) {
+		if (master.get_digital(DIGITAL_L2)) {
 			if (!UpPressedLast) {
 				robotBase.increaseSpeed();
 			}
@@ -136,7 +137,7 @@ void opcontrol() {
 		}
 
 		//control for decreasing speed mode
-		if (master.get_digital(DIGITAL_DOWN)) {
+		if (master.get_digital(DIGITAL_L1)) {
 			if (!DownPressedLast) {
 				robotBase.decreaseSpeed();
 			}

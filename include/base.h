@@ -7,7 +7,7 @@ class Base {
     private:
         pros::Motor_Group* rightMotors;
         pros::Motor_Group* leftMotors;
-        bool swappedFront;
+        bool swappedFront = true;
         int botSpeedLevel = 2;
 
     public:
@@ -33,11 +33,11 @@ class Base {
             // rightControl is for the motors in relation to the bot being swapped
             // and will change depending on which side is front (applies for left side too)
             if(!this->swappedFront){
-                (*rightMotors).move_velocity(convertToRPM(-rightControl)*botSpeedLevel);
-                (*leftMotors).move_velocity(convertToRPM(leftControl)*botSpeedLevel);
+                (*rightMotors).move_velocity(convertToRPM(-rightControl)*botSpeedLevel/3);
+                (*leftMotors).move_velocity(convertToRPM(leftControl)*botSpeedLevel/3);
             } else {
-                (*rightMotors).move_velocity(convertToRPM(leftControl)*botSpeedLevel);
-                (*leftMotors).move_velocity(convertToRPM(-rightControl)*botSpeedLevel);
+                (*rightMotors).move_velocity(convertToRPM(leftControl)*botSpeedLevel/3);
+                (*leftMotors).move_velocity(convertToRPM(-rightControl)*botSpeedLevel/3);
             }
         }
 
@@ -57,6 +57,10 @@ class Base {
         void driveForwards(int speed) {
             this->rightMotors->move(speed);
             this->leftMotors->move(-speed);
+        }
+        void driveBackwards(int speed) {
+            this->rightMotors->move(-speed);
+            this->leftMotors->move(speed);
         }
 };
 
