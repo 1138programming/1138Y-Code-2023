@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "1138Y-Code",
+    "project_name": "1138Y-Code(Comp)",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -311,7 +311,7 @@
     "upload_options": {
       "after": "none",
       "icon": "pros",
-      "slot": 3
+      "slot": 4
     }
   }
 }
