@@ -16,6 +16,7 @@ int BaseSpeed;
 int BaseTurning;
 
 //Track button presses to make single button presses function properly
+bool APressedLast = false;
 bool R1PressedLast = false;
 bool R2PressedLast = false;
 bool UpPressedLast = false;
@@ -27,8 +28,8 @@ Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftBackWheelPort}),
 Auton auton(&robotBase);
 
 //creates intake motors, motor group and limit switch
-pros::Motor intakeRightMotor(KRightIntakePort, true);
-pros::Motor intakeLeftMotor(KLeftIntakePort);
+pros::Motor intakeRightMotor(KRightIntakePort);
+pros::Motor intakeLeftMotor(KLeftIntakePort, true);
 Intake intake(new pros::Motor_Group({intakeRightMotor, intakeLeftMotor}), new pros::ADIDigitalIn(KLimitSwitchPort));
 
 //Controller
@@ -95,29 +96,33 @@ void opcontrol() {
 		BaseSpeed = (master.get_analog(ANALOG_LEFT_Y));
 		BaseTurning = (master.get_analog(ANALOG_RIGHT_X));
 		
-		//runs all the different parts of the bot
+		//runs the drive function for the base
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
-        intake.holdToSpinIntake(KIntakeSpeed);	
 
 		//control for swapping front of bot
-		if (master.get_digital(DIGITAL_R1)) {
-			if (!R1PressedLast) {
+		if (master.get_digital(DIGITAL_A)) {
+			if (!APressedLast) {
 				robotBase.swapBotFront();
 			}
-			R1PressedLast = true;
+			APressedLast = true;
 		} else {
-			R1PressedLast = false;
+			APressedLast = false;
 		}
 
-		//placeholder for other function
-		// if (master.get_digital(DIGITAL_R1)) {
-		// 	if (!R1PressedLast) {
-				
-		// 	}
-		// 	R1PressedLast = true;
-		// } else {
-		// 	R1PressedLast = false;
-		// }
+		//controls the intake spinning
+		if (master.get_digital(DIGITAL_R1)) {
+			intake.spinIntakeInwards();
+		}
+		else if (master.get_digital(DIGITAL_R2)) {
+			intake.spinIntakeOutwards();
+		}
+		//placeholder for hang functionality
+		if (master.get_digital(DIGITAL_X)) {
+			
+		}
+		else if (master.get_digital(DIGITAL_Y)) {
+			
+		}
 
 		//control for increasing speed mode
 		if (master.get_digital(DIGITAL_UP)) {

@@ -2,12 +2,14 @@
 #define Intake_H
 
 #include "main.h"
+#include "constants.h"
 
 class Intake {
-    pros::Motor_Group* intakeMotors;
-    pros::ADIDigitalIn* limitSwitch;
-    bool intakeStopped = false;
-    bool objectInIntake = false;
+    private:
+        pros::Motor_Group* intakeMotors;
+        pros::ADIDigitalIn* limitSwitch;
+        bool intakeStopped = false;
+        bool objectInIntake = false;
 
     public:
         //intake object
@@ -16,42 +18,17 @@ class Intake {
             this->limitSwitch = limitSwitch;
         }
 
-        void holdToSpinIntake(int speed) {
-            if (master.get_digital(DIGITAL_L2)) spinIntakeInwards(speed);
-            if (master.get_digital(DIGITAL_L1)) spinIntakeOutwards(speed);
-        }
-
-        void toggleSpinIntake(int speed) {
-            if (master.get_digital(DIGITAL_L2)) spinIntakeInwardsUntilStop(speed);
-            if (master.get_digital(DIGITAL_L1)) spinIntakeOutwardsUntilStop(speed);
-        }
-
-        void smartSpinIntake(int speed) {
-            // if (master.get_digital(DIGITAL_L2)) 
-            // if (master.get_digital(DIGITAL_L1)) 
-        }
-
         //spins intake based on prefered speed and direction
-        void spinIntakeInwards(int speed) {
-            int intakeSpeed = (speed);
-            (*intakeMotors).move(intakeSpeed);
+        void spinIntakeInwards() {
+            (*intakeMotors).move(KIntakeSpeed);
         }
-        void spinIntakeOutwards(int speed) {
-            int intakeSpeed = (-speed);
-            (*intakeMotors).move(intakeSpeed);
-        }
-        void spinIntakeInwardsUntilStop(int speed) {
-            int intakeSpeed = (speed);
-            (*intakeMotors).move(intakeSpeed);
-        }
-        void spinIntakeOutwardsUntilStop(int speed) {
-            int intakeSpeed = (-speed);
-            (*intakeMotors).move(intakeSpeed);
+        void spinIntakeOutwards() {
+            (*intakeMotors).move(-KIntakeSpeed);
         }
         //will spin until a game object is picked up
-        void spinUntilPickup(int speed) {
+        void spinUntilPickup() {
             while(!objectInIntake){
-                spinIntakeInwards(speed);
+                spinIntakeInwards();
                 if ((*limitSwitch).get_value()) {
                     stopIntake();
                     objectInIntake = true;
@@ -60,11 +37,11 @@ class Intake {
 
         }
         //will outtake game object and then stop automatically
-        void smartOuttake(int speed) {
+        void smartOuttake() {
             while(objectInIntake){
-                spinIntakeOutwards(speed);
+                spinIntakeOutwards();
                 if(!(*limitSwitch).get_value()){
-                    pros::delay(200);//needs to be fine tuned to find right time in ms
+                    pros::delay(200);//doesn't actually work, just delays entire bot code I think
                     stopIntake();
                     objectInIntake = false;
                 }
