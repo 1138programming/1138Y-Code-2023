@@ -1,7 +1,8 @@
 #include "main.h"
 #include "Base.h"
 #include "Intake.h"
-#include "constants.h"
+#include "Constants.h"
+#include "Auton.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -10,16 +11,20 @@
  * "I was pressed!" and nothing.
  */
 
-//Variables
+//Base Variables
 int BaseSpeed;
 int BaseTurning;
-int IntakeSpeed = 60;
 
-//creates right and left motor groups
+//Track button presses to make single button presses function properly
+bool R1PressedLast = false;
+bool R2PressedLast = false;
+bool UpPressedLast = false;
+bool DownPressedLast = false;
 
 // creates drivebase object
-Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftMidWheelPort,KLeftBackWheelPort}),
-	new pros::Motor_Group({KRightFrontWheelPort,KRightMidWheelPort,KRightBackWheelPort}));
+Base robotBase(new pros::Motor_Group({KLeftFrontWheelPort,KLeftBackWheelPort}),
+	new pros::Motor_Group({KRightFrontWheelPort,KRightBackWheelPort}));
+Auton auton(&robotBase);
 
 //creates intake motors, motor group and limit switch
 pros::Motor intakeRightMotor(KRightIntakePort, true);
@@ -66,7 +71,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	auton.driveForwardsAuton(2.0);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -91,5 +98,48 @@ void opcontrol() {
 		//runs all the different parts of the bot
 		robotBase.splitArcadeDrive(BaseSpeed, BaseTurning);
         intake.holdToSpinIntake(KIntakeSpeed);	
+
+		//control for swapping front of bot
+		if (master.get_digital(DIGITAL_R1)) {
+			if (!R1PressedLast) {
+				robotBase.swapBotFront();
+			}
+			R1PressedLast = true;
+		} else {
+			R1PressedLast = false;
+		}
+
+		//placeholder for other function
+		// if (master.get_digital(DIGITAL_R1)) {
+		// 	if (!R1PressedLast) {
+				
+		// 	}
+		// 	R1PressedLast = true;
+		// } else {
+		// 	R1PressedLast = false;
+		// }
+
+		//control for increasing speed mode
+		if (master.get_digital(DIGITAL_UP)) {
+			if (!UpPressedLast) {
+				robotBase.increaseSpeed();
+			}
+			UpPressedLast = true;
+		} else {
+			UpPressedLast = false;
+		}
+
+		//control for decreasing speed mode
+		if (master.get_digital(DIGITAL_DOWN)) {
+			if (!DownPressedLast) {
+				robotBase.decreaseSpeed();
+			}
+			DownPressedLast = true;
+		} else {
+			DownPressedLast = false;
+		}
+
+
+
 	}
 }

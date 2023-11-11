@@ -8,10 +8,8 @@ const int KLimitSwitchPort = 0;
 
 //Drivebase Ports (TBD!)
 const int KRightFrontWheelPort = 2;
-const int KRightMidWheelPort = 4;
 const int KRightBackWheelPort = 6;
 const int KLeftFrontWheelPort = 7;
-const int KLeftMidWheelPort = 8;
 const int KLeftBackWheelPort = 9;
 
 //constant motor speeds (TBD!)
